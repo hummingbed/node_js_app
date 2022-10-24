@@ -1,4 +1,4 @@
-//native imorts
+//native imports
 const fs = require('fs');
 
 //third party imports
@@ -11,22 +11,22 @@ const toursPath = `${__dirname}/data/tours-simple.json`;
 const tours = fs.readFileSync(toursPath)
 
 //homepage url
-app.get('/', (req, res) => {
+const homepage = (req, res) => {
     res.status(200).json([{message: 'hello world'}]);
-});
+};
 
 //get all tours
-app.get('/tours', (req, res) => {
+const allTours = (req, res) => {
     const toJson = JSON.parse(tours);
     res.status(200).json({
         status: 'success',
         results: toJson.length,
         data: { tours: toJson }
     });
-});
+};
 
 //get tours by id
-app.get('/tours/:id', (req, res) => {
+const toursById = (req, res) => {
     console.log(req.params)
 
     const toJson = JSON.parse(tours);
@@ -44,10 +44,10 @@ app.get('/tours/:id', (req, res) => {
         results: toJson.length,
         data: { tours: tour }
     });
-});
+};
 
 //create new tours
-app.post('/tours', (req, res) => {
+const createNewTours = (req, res) => {
     const toJson = JSON.parse(tours);
     const newId = toJson.length;
     const addOne = newId +1;
@@ -61,8 +61,15 @@ app.post('/tours', (req, res) => {
             }
         })
     })
-});
+};
 
+//router
+app.get('/', homepage);
+app.get('/tours', allTours);
+app.get('/tours/:id', toursById);
+app.post('/tours', createNewTours);
+
+//start server
 app.listen(port, (localhost) => {
     console.log('app running');
 });
